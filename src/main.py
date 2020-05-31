@@ -1,15 +1,15 @@
 from tkinter import *
+from field import *
 
 
 class App:
-    fields = []
     columns, rows = 10, 10
 
     def __init__(self, master):
         frame = Frame(master)
         frame.pack()
 
-        self.fields = [[0 for i in range(self.columns)] for j in range(self.rows)]
+        self.fields = [[Field(x,y) for x in range(self.columns)] for y in range(self.rows)]
 
         self.printBoardButton = Button(frame, text="print board", command=self.printBoard)
         self.printBoardButton.pack(side=LEFT)
