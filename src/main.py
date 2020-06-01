@@ -5,7 +5,7 @@ from random import randint
 
 class App:
     columns, rows = 10, 10
-    number_of_bombs = 10
+    number_of_bombs = 20
     bomb_fields = []
 
     def __init__(self, master):
@@ -30,6 +30,7 @@ class App:
 
         clickedField = self.fields[col][row]
         clickedField.isDiscovered = True
+        self.btn[col][row]["state"] = "disabled"
 
         self.print_board()
         self.update_gui()
@@ -39,7 +40,7 @@ class App:
 
         for x in range(self.columns):
             for y in range(self.rows):
-                self.btn[x][y]['text'] = self.get_gui_content(x, y)
+                self.btn[x][y]["text"] = self.get_gui_content(x, y)
 
     def get_gui_content(self, x, y):
         field = self.fields[x][y]
