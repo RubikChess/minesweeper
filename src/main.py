@@ -22,7 +22,7 @@ class App:
         for x in range(self.columns):
             for y in range(self.rows):
                 self.btn[x][y] = Button(
-                    frame, text=self.fields[x][y].get_gui_content(), command=lambda x=x, y=y: self.click_button(x, y))
+                    frame, text=self.get_gui_content(x, y), command=lambda x=x, y=y: self.click_button(x, y))
                 self.btn[x][y].grid(column=x, row=y)
 
     def click_button(self, col, row):
@@ -39,7 +39,30 @@ class App:
 
         for x in range(self.columns):
             for y in range(self.rows):
-                self.btn[x][y]['text'] = self.fields[x][y].get_gui_content()
+                self.btn[x][y]['text'] = self.get_gui_content(x, y)
+
+    def get_gui_content(self, x, y):
+        field = self.fields[x][y]
+
+        if not field.isDiscovered:
+            return "?"
+        else:
+            if field.hasBomb:
+                return "X"
+            else:
+                neighbor_bombs = self.count_neighbor_bombs(x, y)
+                return str(neighbor_bombs)
+
+    def count_neighbor_bombs(self, x, y):
+        number_of_bombs = 0
+
+        for i in [-1, 0, 1]:
+            for j in [-1, 0, 1]:
+                if x+i > 0 and x+i < self.columns and y+j > 0 and y+j < self.rows:
+                    if self.fields[x+i][y+j].hasBomb:
+                        number_of_bombs = number_of_bombs+1
+
+        return number_of_bombs
 
     def place_bombs(self):
         for i in range(self.number_of_bombs):
