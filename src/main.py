@@ -10,16 +10,36 @@ class App:
 
     def __init__(self, master):
         frame = Frame(master)
-        frame.pack()
+        frame.grid(columns=self.columns, rows=self.rows)
+
+        self.btn = [[0 for x in range(self.columns)] for y in range(self.rows)]
 
         self.fields = [[Field(x, y) for x in range(self.columns)]
                        for y in range(self.rows)]
 
         self.place_bombs()
 
-        self.printBoardButton = Button(
-            frame, text="print board", command=self.print_board)
-        self.printBoardButton.pack(side=LEFT)
+        for x in range(self.columns):
+            for y in range(self.rows):
+                self.btn[x][y] = Button(
+                    frame, text=self.fields[x][y].get_gui_content(), command=lambda x=x, y=y: self.click_button(x, y))
+                self.btn[x][y].grid(column=x, row=y)
+
+    def click_button(self, col, row):
+        print(str(self.fields[col][row])+" clicked.")
+
+        clickedField = self.fields[col][row]
+        clickedField.isDiscovered = True
+
+        self.print_board()
+        self.update_gui()
+
+    def update_gui(self):
+        print("update_gui")
+
+        for x in range(self.columns):
+            for y in range(self.rows):
+                self.btn[x][y]['text'] = self.fields[x][y].get_gui_content()
 
     def place_bombs(self):
         for i in range(self.number_of_bombs):
