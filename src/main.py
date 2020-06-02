@@ -25,22 +25,15 @@ class App:
                     frame, text=self.get_gui_content(x, y), command=lambda x=x, y=y: self.click_button(x, y))
                 self.btn[x][y].grid(column=x, row=y)
 
-    def click_button(self, col, row):
-        print(str(self.fields[col][row])+" clicked.")
+    def place_bombs(self):
+        for i in range(self.number_of_bombs):
+            self.place_bomb()
 
-        clickedField = self.fields[col][row]
-        clickedField.isDiscovered = True
-        self.btn[col][row]["state"] = "disabled"
+    def place_bomb(self):
+        x = randint(0, self.columns - 1)
+        y = randint(0, self.rows - 1)
 
-        self.print_board()
-        self.update_gui()
-
-    def update_gui(self):
-        print("update_gui")
-
-        for x in range(self.columns):
-            for y in range(self.rows):
-                self.btn[x][y]["text"] = self.get_gui_content(x, y)
+        self.fields[x][y].hasBomb = True
 
     def get_gui_content(self, x, y):
         field = self.fields[x][y]
@@ -54,6 +47,7 @@ class App:
                 neighbor_bombs = self.count_neighbor_bombs(x, y)
                 return str(neighbor_bombs)
 
+
     def count_neighbor_bombs(self, x, y):
         number_of_bombs = 0
 
@@ -65,15 +59,15 @@ class App:
 
         return number_of_bombs
 
-    def place_bombs(self):
-        for i in range(self.number_of_bombs):
-            self.place_bomb()
+    def click_button(self, col, row):
+        print(str(self.fields[col][row])+" clicked.")
 
-    def place_bomb(self):
-        x = randint(0, self.columns - 1)
-        y = randint(0, self.rows - 1)
+        clickedField = self.fields[col][row]
+        clickedField.isDiscovered = True
+        self.btn[col][row]["state"] = "disabled"
 
-        self.fields[x][y].hasBomb = True
+        self.print_board()
+        self.update_gui()
 
     def print_board(self):
         print("Field:")
@@ -91,6 +85,13 @@ class App:
             return "x"
         else:
             return "o"
+
+    def update_gui(self):
+        print("update_gui")
+
+        for x in range(self.columns):
+            for y in range(self.rows):
+                self.btn[x][y]["text"] = self.get_gui_content(x, y)
 
 
 root = Tk()
