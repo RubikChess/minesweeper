@@ -4,7 +4,7 @@ from app import App
 if __name__ == '__main__':
     root = Tk()
     root.title("Minesweeper")
-    root.geometry("500x400")
+    root.geometry("400x400")
 
     app = App(root)
     root.title = "Minesweeper"

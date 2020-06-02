@@ -9,9 +9,6 @@ class App:
     bomb_fields = []
 
     def __init__(self, master):
-        frame = Frame(master)
-        frame.grid(columns=self.columns, rows=self.rows)
-
         self.btn = [[0 for x in range(self.columns)] for y in range(self.rows)]
 
         self.fields = [[Field(x, y) for x in range(self.columns)]
@@ -19,11 +16,7 @@ class App:
 
         self.place_bombs()
 
-        for x in range(self.columns):
-            for y in range(self.rows):
-                self.btn[x][y] = Button(
-                    frame, text=self.get_gui_content(x, y), command=lambda x=x, y=y: self.click_button(x, y))
-                self.btn[x][y].grid(column=x, row=y)
+        self.init_buttons(master)
 
     def place_bombs(self):
         for i in range(self.number_of_bombs):
@@ -91,3 +84,13 @@ class App:
         for x in range(self.columns):
             for y in range(self.rows):
                 self.btn[x][y]["text"] = self.get_gui_content(x, y)
+
+    def init_buttons(self, frame):
+        for x in range(self.columns):
+            for y in range(self.rows):
+                self.btn[x][y] = Button(
+                    master=frame,
+                    text=self.get_gui_content(x, y),
+                    command=lambda x=x, y=y: self.click_button(x, y))
+
+                self.btn[x][y].place(x=x*40, y=y*40, width=40, height=40)
