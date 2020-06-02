@@ -23,13 +23,13 @@ class App:
             self.place_bomb()
 
     def place_bomb(self):
-        x = randint(0, self.columns - 1)
-        y = randint(0, self.rows - 1)
+        col = randint(0, self.columns - 1)
+        row = randint(0, self.rows - 1)
 
-        self.fields[x][y].hasBomb = True
+        self.fields[col][row].hasBomb = True
 
-    def get_gui_content(self, x, y):
-        field = self.fields[x][y]
+    def get_gui_content(self, col, row):
+        field = self.fields[col][row]
 
         if not field.isDiscovered:
             return "?"
@@ -37,16 +37,16 @@ class App:
             if field.hasBomb:
                 return "X"
             else:
-                neighbor_bombs = self.count_neighbor_bombs(x, y)
+                neighbor_bombs = self.count_neighbor_bombs(col, row)
                 return str(neighbor_bombs)
 
-    def count_neighbor_bombs(self, x, y):
+    def count_neighbor_bombs(self, col, row):
         number_of_bombs = 0
 
         for i in [-1, 0, 1]:
             for j in [-1, 0, 1]:
-                if x+i > 0 and x+i < self.columns and y+j > 0 and y+j < self.rows:
-                    if self.fields[x+i][y+j].hasBomb:
+                if col+i > 0 and col+i < self.columns and row+j > 0 and row+j < self.rows:
+                    if self.fields[col+i][row+j].hasBomb:
                         number_of_bombs = number_of_bombs+1
 
         return number_of_bombs
@@ -81,16 +81,16 @@ class App:
     def update_gui(self):
         print("update_gui")
 
-        for x in range(self.columns):
-            for y in range(self.rows):
-                self.btn[x][y]["text"] = self.get_gui_content(x, y)
+        for col in range(self.columns):
+            for row in range(self.rows):
+                self.btn[col][row]["text"] = self.get_gui_content(col, row)
 
     def init_buttons(self, frame):
-        for x in range(self.columns):
-            for y in range(self.rows):
-                self.btn[x][y] = Button(
+        for col in range(self.columns):
+            for row in range(self.rows):
+                self.btn[col][row] = Button(
                     master=frame,
-                    text=self.get_gui_content(x, y),
-                    command=lambda x=x, y=y: self.click_button(x, y))
+                    text=self.get_gui_content(col, row),
+                    command=lambda x=col, y=row: self.click_button(x, y))
 
-                self.btn[x][y].place(x=x*40, y=y*40, width=40, height=40)
+                self.btn[col][row].place(x=row*40, y=col*40, width=40, height=40)
